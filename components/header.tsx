@@ -1,9 +1,16 @@
+'use client';
+import { useState } from "react";
 import Link from "next/link";
-import { AudioWaveform } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Heart, Menu, X, MessageCircle, AudioWaveform, LogOut, LogIn } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { SignInButton } from "./auth/sign-in-button";
 
 export default function Header() {
+
+    // State to manage mobile menu visibility
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navItems = [
         { href: "/features", label: "Features" },
@@ -48,9 +55,42 @@ export default function Header() {
                         <div>
                             <ThemeToggle />
                             <SignInButton />
+
+                            {/* Mobile menu button */}
+                            <Button
+                                variant="ghost"
+                                size="icon"             // size icon means small button
+                                className="md:hidden"   // Hide on larger screens
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}  // Toggle mobile menu
+                            >
+                                {isMenuOpen ? (
+                                    <X className="h-5 w-5" />
+                                ) : (
+                                    <Menu className="h-5 w-5" />
+                                )}
+                            </Button>
                         </div>
                     </div>
                 </div>
+                {/* Mobile menu */}
+                {isMenuOpen && (
+                    <div className="md:hidden border-t border-primary/10">      {/* Mobile menu items */}
+                        <nav className="flex flex-col space-y-1 py-4">          {/* Use flex-col for vertical stacking */}
+                            {/* Map through nav items for mobile menu */}
+                            {navItems.map((item) => (                           
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className="px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-primary/5 rounded-md transition-colors"
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {item.label}
+                                </Link>
+                            ))}
+                        </nav>
+                    </div>
+                )}
+                
             </header>
         </div>
     );

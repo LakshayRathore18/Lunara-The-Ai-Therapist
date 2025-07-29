@@ -275,7 +275,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* <Dialog open={showDialog} onOpenChange={setShowDialog}>
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="sm:max-w-[425px] bg-card/80 backdrop-blur-lg">
           <DialogHeader>
             <motion.div
@@ -342,7 +342,7 @@ export default function Home() {
             </Button>
           </div>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
 
     </div>
   );

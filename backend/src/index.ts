@@ -1,7 +1,11 @@
 import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 import { logger } from "./utils/logger";
+import { connectDB } from './utils/db';
 import { serve } from "inngest/express";
-import { inngest, functions } from "./inngest";
+import { inngest } from "./inngest";
+import { functions as inngestFunctions } from "./inngest";
 
 const app = express();
 
@@ -9,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 // Set up the "/api/inngest" routes
-app.use("/api/inngest", serve({ client: inngest, functions }));
+app.use("/api/inngest", serve({ client: inngest, functions : inngestFunctions }));
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
@@ -18,6 +22,7 @@ app.get('/', (req: Request, res: Response) => {
 // Start the server
 const startServer = async () => {
     try {
+        await connectDB();
         const PORT = process.env.PORT || 3001;
         app.listen(PORT, () => {
             logger.info(`Server is running on http://localhost:${PORT}`);
